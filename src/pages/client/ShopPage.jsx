@@ -257,7 +257,7 @@ const ShopPage = () => {
             ))}
           </div>
         )}
-        <div className="flex items-center justify-between mt-5">
+        <div className="flex lg:flex-row flex-col items-center justify-between mt-5 gap-5">
           <p className="text-gray-400 sm:text-base text-sm">
             Showing {itemOffset + 1}-
             {endOffset <= filteredProducts?.length
@@ -272,18 +272,23 @@ const ShopPage = () => {
               nextLabel=">"
               breakLabel="..."
               breakClassName="join-item btn sm:btn-md btn-sm bg-white"
-              breakLinkClassName="text-black rounded-full bg-white"
+              breakLinkClassName="text-black rounded-full bg-transparent"
               pageCount={pageCount}
-              pageRangeDisplayed={3}
+              pageRangeDisplayed={1}
               marginPagesDisplayed={2}
               onPageChange={handlePageClick}
               pageClassName=""
-              pageLinkClassName="join-item btn sm:btn-md btn-sm bg-white text-black rounded-full"
-              previousLinkClassName="page-link bg-white join-item btn sm:btn-md btn-sm text-black rounded-full"
-              nextLinkClassName="join-item bg-white btn sm:btn-md btn-sm text-black rounded-full disabled"
-              activeClassName="active border-0"
-              activeLinkClassName="page-link bg-purple-500 text-white font-bold border-0 "
+              pageLinkClassName="join-item btn sm:btn-md btn-sm text-black rounded-full bg-white"
+              previousLinkClassName={`page-link bg-white join-item btn sm:btn-md btn-sm text-black rounded-full ${
+                forcePage === 0 ? "btn-disabled" : ""
+              }`}
+              nextLinkClassName={`join-item bg-white btn sm:btn-md btn-sm text-black rounded-full ${
+                forcePage === pageCount - 1 ? "btn-disabled" : ""
+              }`}
+              activeClassName="active border-0 bg-purple-500"
+              activeLinkClassName="page-link !bg-purple-500 text-white font-bold border-0 "
               forcePage={forcePage}
+              disabledClassName="cursor-not-allowed"
             />
           )}
         </div>

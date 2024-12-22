@@ -40,6 +40,15 @@ const CartPage = () => {
   }
 
   const checkoutHandler = () => {
+    if (carts.length < 1) {
+      Swal.fire({
+        title: "Empty carts",
+        icon: "info",
+        text: "Please add one or more products to your cart first",
+      });
+      return;
+    }
+
     Swal.fire({
       title: "Confirm Checkout?",
       text: "Are you sure you want to checkout all the products?",
@@ -50,7 +59,7 @@ const CartPage = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         carts?.forEach((cart) => {
-          deleteMutation.mutate(cart.id);
+          deleteMutation.mutate(cart);
         });
       }
     });

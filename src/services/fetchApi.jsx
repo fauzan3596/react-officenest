@@ -97,9 +97,29 @@ const deleteCart = async (id) => {
   });
 };
 
-const checkoutCarts = async (id) => {
-  const docRef = doc(db, "carts", id);
-  return await deleteDoc(docRef);
+const checkoutCarts = async (cart) => {
+  const docRef = doc(db, "carts", cart.id);
+
+  const productRef = doc(db, "products", cart.id);
+  const productSnap = await getDoc(productRef);
+
+  if (productSnap.exists()) {
+    const productData = productSnap.data();
+    const newStock = productData.stock - cart.quantity;
+
+    await updateDoc(productRef, {
+      stock: newStock,
+      updatedAt: new Date().toISOString(),
+    });
+
+    await deleteDoc(docRef);
+  }
+
+  return Swal.fire({
+    title: "Success!",
+    text: "Your checkout is successful!",
+    icon: "success",
+  });
 };
 
 export {
@@ -109,5 +129,5 @@ export {
   fetchCarts,
   updateCart,
   deleteCart,
-  checkoutCarts
+  checkoutCarts,
 };

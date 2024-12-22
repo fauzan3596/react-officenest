@@ -53,12 +53,14 @@ const DetailProductPage = () => {
   const { name, description, price, imgUrl, stock } = product;
 
   if (quantity > stock) {
-    dispatch(setQuantity(stock));
-    Swal.fire({
-      title: "Out of Stock!",
-      text: "Cannot exceed stock limit!",
-      icon: "error",
-    });
+    if (stock > 0) {
+      dispatch(setQuantity(stock));
+      Swal.fire({
+        title: "Out of Stock!",
+        text: "Cannot exceed stock limit!",
+        icon: "error",
+      });
+    }
   }
 
   const cld = new Cloudinary({
@@ -97,29 +99,37 @@ const DetailProductPage = () => {
         <hr />
         <div className="flex items-center lg:gap-10 md:gap-4 gap-10">
           <p className="text-gray-500 font-medium">Quantity</p>
-          <div className="flex items-center border rounded-full">
+          <div
+            className={`flex items-center border rounded-full ${
+              stock === 0 ? "bg-gray-400 opacity-50" : ""
+            }`}
+          >
             <button
               onClick={() => dispatch(decrement())}
-              className="text-xl font-bold px-3 rounded-l-full py-2 hover:bg-[#e84f69] hover:text-white"
+              className="text-xl font-bold px-3 rounded-l-full py-2 hover:bg-[#e84f69] hover:text-white disabled:bg-gray-400 disabled:text-black"
+              disabled={stock === 0}
             >
               &minus;
             </button>
             <input
               type="number"
-              className="lg:w-14 md:w-10 w-14 text-center [&::-webkit-inner-spin-button]:appearance-none py-2 focus:outline-none"
+              className="lg:w-14 md:w-10 w-14 text-center [&::-webkit-inner-spin-button]:appearance-none py-2 focus:outline-none disabled:bg-gray-400"
               value={!quantity ? 1 : quantity}
               onChange={(e) => dispatch(setQuantity(Number(e.target.value)))}
+              disabled={stock === 0}
             />
             <button
               onClick={() => dispatch(increment())}
-              className="text-xl font-bold px-3 rounded-r-full py-2 hover:bg-[#e84f69] hover:text-white"
+              className="text-xl font-bold px-3 rounded-r-full py-2 hover:bg-[#e84f69] hover:text-white disabled:bg-gray-400 disabled:text-black"
+              disabled={stock === 0}
             >
               +
             </button>
           </div>
           <button
             onClick={addToCartHandler}
-            className="btn bg-[#e84f69] text-white lg:w-36 md:w-28 w-36 hover:bg-rose-800 rounded-full"
+            className="btn bg-[#e84f69] text-white lg:w-36 md:w-28 w-36 hover:bg-rose-800 rounded-full disabled:bg-gray-400 disabled:text-black disabled:opacity-50"
+            disabled={stock === 0}
           >
             Add to Cart
           </button>

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Tagline = () => {
   return (
@@ -18,7 +19,7 @@ const Tagline = () => {
           workspace.
         </p>
         <div className="flex mt-5 gap-5">
-          <button className="btn btn-neutral text-white w-28 hover:scale-110 rounded-badge">Contact Us</button>
+          <Link to="/client/contact" className="btn btn-neutral text-white w-28 hover:scale-110 rounded-badge">Contact Us</Link>
           <button className="btn btn-outline w-36 hover:scale-110 rounded-badge">Learn More</button>
         </div>
       </div>
