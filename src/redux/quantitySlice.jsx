@@ -7,9 +7,6 @@ const quantitySlice = createSlice({
   },
   reducers: {
     increment: (state) => {
-      if (!state.value) {
-        state.value++;
-      }
       state.value++;
     },
     decrement: (state) => {

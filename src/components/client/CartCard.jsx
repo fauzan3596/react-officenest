@@ -20,28 +20,31 @@ const CartCard = ({ cart }) => {
     },
   });
 
-  useEffect(() => {
-    if (quantityItem < 1) {
+  const quantityHandler = (newQuantity) => {
+    if (newQuantity < 1) {
       setQuantityItem(1);
       deleteMutation.mutate(id);
       return;
     }
 
-    if (quantityItem > stock) {
-      setQuantityItem(stock);
+    if (newQuantity > stock) {
       Swal.fire({
         title: "Out of Stock!",
+        text: "Cannot exceed stock limit!",
         icon: "error",
       });
+      setQuantityItem(stock);
       return;
     }
 
+    setQuantityItem(newQuantity);
+
     const newCart = {
       ...cart,
-      quantity: Number(quantityItem),
+      quantity: Number(newQuantity),
     };
     updateMutation.mutate({ id, cart: newCart });
-  }, [quantityItem]);
+  };
 
   const deleteMutation = useMutation({
     mutationFn: deleteCart,
@@ -70,10 +73,6 @@ const CartCard = ({ cart }) => {
     }).format(number);
   };
 
-  // if (quantity > stock) {
-  //   alert("error")
-  // }
-
   return (
     <div className="card card-side sm:card-normal card-compact bg-base-100 border">
       <figure className="bg-[#f5f5f5] max-w-40 min-w-40">
@@ -92,7 +91,7 @@ const CartCard = ({ cart }) => {
           <div className="md:flex-[0.3] flex justify-center">
             <div className="flex items-center border rounded-full">
               <button
-                onClick={() => setQuantityItem((prev) => prev - 1)}
+                onClick={() => quantityHandler(quantityItem - 1)}
                 className="text-xl font-bold px-3 rounded-l-full py-2 hover:bg-[#e84f69] hover:text-white"
               >
                 &minus;
@@ -101,10 +100,10 @@ const CartCard = ({ cart }) => {
                 type="number"
                 className="lg:w-14 md:w-10 w-14 text-center [&::-webkit-inner-spin-button]:appearance-none py-2 focus:outline-none"
                 value={quantityItem}
-                onChange={(e) => setQuantityItem(Number(e.target.value))}
+                onChange={(e) => quantityHandler(Number(e.target.value))}
               />
               <button
-                onClick={() => setQuantityItem((prev) => prev + 1)}
+                onClick={() => quantityHandler(quantityItem + 1)}
                 className="text-xl font-bold px-3 rounded-r-full py-2 hover:bg-[#e84f69] hover:text-white"
               >
                 +

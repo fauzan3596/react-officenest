@@ -36,7 +36,7 @@ const DetailProductPage = () => {
 
   useEffect(() => {
     dispatch(setQuantity(1));
-  }, []);
+  }, [dispatch]);
 
   if (isLoading) {
     return <LoadingSpinner loading={isLoading} />;
@@ -51,6 +51,15 @@ const DetailProductPage = () => {
   }
 
   const { name, description, price, imgUrl, stock } = product;
+
+  if (quantity > stock) {
+    dispatch(setQuantity(stock));
+    Swal.fire({
+      title: "Out of Stock!",
+      text: "Cannot exceed stock limit!",
+      icon: "error",
+    });
+  }
 
   const cld = new Cloudinary({
     cloud: {
@@ -99,7 +108,7 @@ const DetailProductPage = () => {
               type="number"
               className="lg:w-14 md:w-10 w-14 text-center [&::-webkit-inner-spin-button]:appearance-none py-2 focus:outline-none"
               value={!quantity ? 1 : quantity}
-              onChange={(e) => dispatch(setQuantity(e.target.value))}
+              onChange={(e) => dispatch(setQuantity(Number(e.target.value)))}
             />
             <button
               onClick={() => dispatch(increment())}
