@@ -1,7 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { addProductToCart, fetchProductById } from "../../services/fetchApi";
+import {
+  addProductToCart,
+  fetchCartsById,
+  fetchProductById,
+} from "../../services/fetchApi";
 import { Cloudinary } from "@cloudinary/url-gen/index";
 import { AdvancedImage } from "@cloudinary/react";
 import { LoadingSpinner } from "../../components";
@@ -11,6 +15,8 @@ import { decrement, increment, setQuantity } from "../../redux/quantitySlice";
 
 const DetailProductPage = () => {
   const { id } = useParams();
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
   const {
     data: product,
     isLoading,
@@ -20,9 +26,12 @@ const DetailProductPage = () => {
     queryKey: ["product", id],
     queryFn: () => fetchProductById(id),
   });
-  const queryClient = useQueryClient();
 
-  const dispatch = useDispatch();
+  const { data: cart, refetch } = useQuery({
+    queryKey: ["cart", id],
+    queryFn: () => fetchCartsById(id),
+  });
+
   const { value: quantity } = useSelector((state) => state.quantity);
 
   const addMutation = useMutation({
@@ -31,8 +40,15 @@ const DetailProductPage = () => {
       queryClient.invalidateQueries({
         queryKey: ["carts"],
       });
+      refetch();
     },
   });
+
+  const addToCartHandler = () => {
+    const productCart = { ...product, quantity: quantity };
+    addMutation.mutate(productCart);
+    dispatch(setQuantity(1));
+  };
 
   useEffect(() => {
     dispatch(setQuantity(1));
@@ -52,17 +68,7 @@ const DetailProductPage = () => {
 
   const { name, description, price, imgUrl, stock } = product;
 
-  if (quantity > stock) {
-    if (stock > 0) {
-      dispatch(setQuantity(stock));
-      Swal.fire({
-        title: "Out of Stock!",
-        text: "Cannot exceed stock limit!",
-        icon: "error",
-      });
-    }
-  }
-
+  
   const cld = new Cloudinary({
     cloud: {
       cloudName: "dlnqwafkc",
@@ -77,10 +83,27 @@ const DetailProductPage = () => {
     }).format(number);
   };
 
-  const addToCartHandler = () => {
-    const productCart = { ...product, quantity: quantity };
-    addMutation.mutate(productCart);
-  };
+  if (quantity > stock) {
+    if (stock > 0) {
+      dispatch(setQuantity(stock));
+      Swal.fire({
+        title: "Out of Stock!",
+        text: "Cannot exceed stock limit!",
+        icon: "error",
+      });
+    }
+  }
+
+  if (quantity > stock - cart.quantity) {
+    if (stock !== cart.quantity) {
+      dispatch(setQuantity(stock - cart.quantity));
+      Swal.fire({
+        title: "Out of Stock!",
+        text: "Cannot exceed stock limit!",
+        icon: "error",
+      });
+    }
+  }
 
   return (
     <main className="min-h-screen w-full flex md:flex-row flex-col pt-14 lg:px-10 px-5 pb-10 gap-10">
@@ -101,13 +124,15 @@ const DetailProductPage = () => {
           <p className="text-gray-500 font-medium">Quantity</p>
           <div
             className={`flex items-center border rounded-full ${
-              stock === 0 ? "bg-gray-400 opacity-50" : ""
+              stock === 0 || stock === cart.quantity
+                ? "bg-gray-400 opacity-50"
+                : ""
             }`}
           >
             <button
               onClick={() => dispatch(decrement())}
               className="text-xl font-bold px-3 rounded-l-full py-2 hover:bg-[#e84f69] hover:text-white disabled:bg-gray-400 disabled:text-black"
-              disabled={stock === 0}
+              disabled={stock === 0 || stock === cart.quantity}
             >
               &minus;
             </button>
@@ -116,12 +141,12 @@ const DetailProductPage = () => {
               className="lg:w-14 md:w-10 w-14 text-center [&::-webkit-inner-spin-button]:appearance-none py-2 focus:outline-none disabled:bg-gray-400"
               value={!quantity ? 1 : quantity}
               onChange={(e) => dispatch(setQuantity(Number(e.target.value)))}
-              disabled={stock === 0}
+              disabled={stock === 0 || stock === cart.quantity}
             />
             <button
               onClick={() => dispatch(increment())}
               className="text-xl font-bold px-3 rounded-r-full py-2 hover:bg-[#e84f69] hover:text-white disabled:bg-gray-400 disabled:text-black"
-              disabled={stock === 0}
+              disabled={stock === 0 || stock === cart.quantity}
             >
               +
             </button>
@@ -129,7 +154,7 @@ const DetailProductPage = () => {
           <button
             onClick={addToCartHandler}
             className="btn bg-[#e84f69] text-white lg:w-36 md:w-28 w-36 hover:bg-rose-800 rounded-full disabled:bg-gray-400 disabled:text-black disabled:opacity-50"
-            disabled={stock === 0}
+            disabled={stock === 0 || stock === cart.quantity}
           >
             Add to Cart
           </button>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import stationery from "../../../assets/stationery.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../redux/action";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCarts } from "../../../services/fetchApi";
@@ -11,10 +11,7 @@ const NavbarClient = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { data: carts } = useQuery({
-    queryKey: ["carts"],
-    queryFn: fetchCarts,
-  });
+  const { carts } = useSelector((state) => state.carts);
 
   const logOutHandler = () => {
     dispatch(logoutUser());

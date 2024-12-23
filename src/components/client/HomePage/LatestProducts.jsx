@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../../services/fetchApi";
 import { fetchProductsSuccess } from "../../../redux/productsSlice";
 import Swal from "sweetalert2";
@@ -10,29 +10,23 @@ import stationeryToolsImg from "../../../assets/stationerytools.png";
 import { Link } from "react-router-dom";
 
 const LatestProducts = () => {
-  const dispatch = useDispatch();
-
   const {
     data: products,
-    isLoading,
-    isError,
+    loading,
     error,
-  } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
-  });
+  } = useSelector((state) => state.products);
 
   const sortProducts = () => {
-    const sortedProducts = Object.values(products).sort(
+    const sortedProducts = Object.values(products ? products : "").sort(
       (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
     );
     return sortedProducts;
   };
 
-  if (isError) {
+  if (error) {
     return Swal.fire({
       title: "Error!",
-      text: error.message,
+      text: error,
       icon: "error",
     });
   }
@@ -45,8 +39,8 @@ const LatestProducts = () => {
       <p className="text-[#88868A] font-medium mt-3 text-lg sm:w-[30rem] mx-auto sm:pb-10 pb-5">
         Browse Our Wide Range of Innovative Stationery and Office Products
       </p>
-      {isLoading ? (
-        <LoadingSpinner loading={isLoading} />
+      {loading ? (
+        <LoadingSpinner loading={loading} />
       ) : (
         <div className="flex lg:flex-row flex-col sm:px-10 gap-5">
           <div className="lg:w-2/3">

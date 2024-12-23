@@ -1,29 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../services/fetchApi";
-import { fetchProductsSuccess } from "../../redux/productsSlice";
-import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { LoadingSpinner, ProductCard } from "../../components";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
 
 const ShopPage = () => {
-  const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState([]);
   const [sortOption, setSortOption] = useState("");
   const {
     data: products,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
-    onSuccess: (data) => {
-      dispatch(fetchProductsSuccess(data));
-    },
-  });
+    loading,
+    error,
+  } = useSelector((state) => state.products);
   const itemsPerPage = 12;
   const [itemOffset, setItemOffset] = useState(0);
   const [forcePage, setForcePage] = useState(0);
@@ -145,10 +135,10 @@ const ShopPage = () => {
     </div>
   );
 
-  if (isError) {
+  if (error) {
     Swal.fire({
       title: "Error!",
-      text: "Failted to fetch products",
+      text: error,
       icon: "error",
     });
   }
@@ -248,8 +238,8 @@ const ShopPage = () => {
             : filteredProducts?.length}{" "}
           of {filteredProducts?.length} products
         </p>
-        {isLoading ? (
-          <LoadingSpinner loading={isLoading} />
+        {loading ? (
+          <LoadingSpinner loading={loading} />
         ) : (
           <div className="mt-5 grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
             {currentProducts?.map((product) => (

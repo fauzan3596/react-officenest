@@ -70,6 +70,17 @@ const fetchCarts = async () => {
   return data;
 };
 
+const fetchCartsById = async (id) => {
+  const docRef = doc(db, "carts", id);
+
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() };
+  } else {
+    return { id: id };
+  }
+};
+
 const updateCart = async ({ id, cart }) => {
   const docRef = doc(db, "carts", id);
   return await updateDoc(docRef, cart);
@@ -127,6 +138,7 @@ export {
   fetchProductById,
   addProductToCart,
   fetchCarts,
+  fetchCartsById,
   updateCart,
   deleteCart,
   checkoutCarts,
