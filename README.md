@@ -34,14 +34,14 @@ With a commitment to quality, convenience, and exceptional customer service, Off
 **Available for both client and admin side.**
 
 <p align="center">
-  <img alt="Client Landing Page" title="Client Landing Page" src="./public/client-landingpage.PNG" width="450">
-  Access the client side in <a href="https://react-phase2-fauzan.web.app/client">https://react-phase2-fauzan.web.app/client</a>
+  <img alt="Client Landing Page" title="Client Landing Page" src="./public/client-landingpage.PNG" width="full">
 </p>
+  Access the client side in <a href="https://react-phase2-fauzan.web.app/client">https://react-phase2-fauzan.web.app/client</a>
 
 <p align="center">
-  <img alt="Admin Landing Page" title="Admin Landing Page" src="./public/admin-landingpage.PNG" width="450">
-  Access the client side in <a href="https://react-phase2-fauzan.web.app/">https://react-phase2-fauzan.web.app/</a>
+  <img alt="Admin Landing Page" title="Admin Landing Page" src="./public/admin-landingpage.PNG" width="100%">
 </p>
+  Access the client side in <a href="https://react-phase2-fauzan.web.app/">https://react-phase2-fauzan.web.app/</a>
 
 ## Features
 
