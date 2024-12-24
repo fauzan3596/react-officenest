@@ -1,7 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logoutUser } from "../../redux/action";
 import {
   BrowseByCategories,
   ContactUs,
@@ -12,14 +11,6 @@ import {
 } from "../../components";
 
 const HomePageClient = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  // const logOutHandler = () => {
-  //   dispatch(logoutUser());
-  //   navigate("/client/login");
-  // };
-
   return (
     <main className="min-h-screen w-full">
       <Header />

@@ -22,8 +22,11 @@ import CustomerCard from "./client/AboutPage/CustomerCard";
 import ContactSection from "./client/ContactPage/ContactSection";
 import OurLocation from "./client/ContactPage/OurLocation";
 import LocationCard from "./client/ContactPage/LocationCard";
-import CartCard from "./client/CartCard";
+import CartCard from "./client/CartPage/CartCard";
 import SearchModal from "./client/Navbar/SearchModal";
+import SideNavbar from "./client/Navbar/SideNavbar";
+import FilterByPrice from "./client/ShopPage/FilterByPrice";
+import Pagination from "./client/ShopPage/Pagination";
 
 export {
   Navbar,
@@ -51,5 +54,8 @@ export {
   OurLocation,
   LocationCard,
   CartCard,
-  SearchModal
+  SearchModal,
+  SideNavbar,
+  FilterByPrice,
+  Pagination
 };

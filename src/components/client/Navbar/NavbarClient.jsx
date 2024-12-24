@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import stationery from "../../../assets/stationery.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../redux/action";
-import { useQuery } from "@tanstack/react-query";
-import { fetchCarts } from "../../../services/fetchApi";
-import { SearchModal } from "../../";
+import { SearchModal, SideNavbar } from "../../";
 
 const NavbarClient = () => {
   const navigate = useNavigate();
@@ -39,10 +37,10 @@ const NavbarClient = () => {
   });
 
   return (
-    <div className="drawer sticky top-0 z-50">
+    <nav className="drawer sticky top-0 z-50">
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col">
-        <nav className="navbar bg-base-100">
+        <div className="navbar bg-base-100">
           <div className="flex-none lg:hidden">
             <label
               htmlFor="my-drawer-3"
@@ -214,68 +212,11 @@ const NavbarClient = () => {
               </ul>
             </div>
           </div>
-        </nav>
+        </div>
       </div>
-      <div className="drawer-side z-50">
-        <label
-          htmlFor="my-drawer-3"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
-        <ul className="menu bg-base-200 min-h-full w-80 p-4">
-          <li className="mb-4">
-            <div className="flex items-center">
-              <img
-                src={stationery}
-                alt="OfficeNest Logo"
-                className="h-10 w-10"
-              />
-              <h1 className="block ps-1 text-black font-bold text-xl">
-                OfficeNest
-              </h1>
-            </div>
-          </li>
-          <li>
-            <NavLink
-              to="/client"
-              style={navLinkStyle}
-              end
-              className="rounded-badge"
-            >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/client/shop"
-              style={navLinkStyle}
-              className="rounded-badge"
-            >
-              Shop
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/client/about"
-              style={navLinkStyle}
-              className="rounded-badge"
-            >
-              About
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/client/contact"
-              style={navLinkStyle}
-              className="rounded-badge"
-            >
-              Contact
-            </NavLink>
-          </li>
-        </ul>
-      </div>
+      <SideNavbar />
       <SearchModal />
-    </div>
+    </nav>
   );
 };
 

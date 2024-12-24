@@ -1,5 +1,5 @@
-import React from 'react'
-import { ContactSection, OurLocation } from '../../components'
+import React from "react";
+import { ContactSection, OurLocation } from "../../components";
 
 const ContactPage = () => {
   return (
@@ -7,7 +7,7 @@ const ContactPage = () => {
       <ContactSection />
       <OurLocation />
     </main>
-  )
-}
+  );
+};
 
-export default ContactPage
+export default ContactPage;

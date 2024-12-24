@@ -2,18 +2,13 @@ import React, { useEffect } from "react";
 import { WelcomeCard, ItemCard } from "../../components";
 import { useDispatch } from "react-redux";
 import { getProducts } from "../../redux/action";
-import { useNavigate } from "react-router-dom";
+
 function HomePage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
-
-  useEffect(() => {
-    navigate("/client");
-  }, []);
 
   return (
     <main className="h-screen w-full px-5 pt-5">

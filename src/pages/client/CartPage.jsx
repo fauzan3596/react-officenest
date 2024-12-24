@@ -5,17 +5,10 @@ import { CartCard, LoadingSpinner } from "../../components";
 import Swal from "sweetalert2";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const CartPage = () => {
-  const {
-    data: carts,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["carts"],
-    queryFn: fetchCarts,
-  });
+  const { carts, loading, error } = useSelector((state) => state.carts);
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
@@ -27,20 +20,20 @@ const CartPage = () => {
     },
   });
 
-  if (isLoading) {
-    return <LoadingSpinner loading={isLoading} />;
+  if (loading) {
+    return <LoadingSpinner loading={loading} />;
   }
 
-  if (isError) {
+  if (error) {
     return Swal.fire({
       title: "Error!",
-      text: error.message,
+      text: error,
       icon: "error",
     });
   }
 
   const checkoutHandler = () => {
-    if (carts.length < 1) {
+    if (carts?.length < 1) {
       Swal.fire({
         title: "Empty carts",
         icon: "info",
@@ -73,7 +66,7 @@ const CartPage = () => {
     return total + cart.quantity * cart.price;
   }, 0);
 
-  const shipping = carts.length > 0 && 15000;
+  const shipping = carts?.length > 0 && 15000;
   const totalWithoutTax = totalPrice + shipping;
   const totalWithTax = totalWithoutTax + totalPrice * 0.1;
   const tax = totalWithTax - totalWithoutTax;
@@ -117,7 +110,9 @@ const CartPage = () => {
               <p>{rupiah(totalPrice)}</p>
             </div>
             <div
-              className={`flex justify-between ${carts.length < 1 && "hidden"}`}
+              className={`flex justify-between ${
+                carts?.length < 1 && "hidden"
+              }`}
             >
               <p>Shipping</p>
               <p>{rupiah(shipping)}</p>

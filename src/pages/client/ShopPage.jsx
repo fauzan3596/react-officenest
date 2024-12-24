@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { LoadingSpinner, ProductCard } from "../../components";
+import {
+  FilterByPrice,
+  LoadingSpinner,
+  Pagination,
+  ProductCard,
+} from "../../components";
 import Swal from "sweetalert2";
-import ReactPaginate from "react-paginate";
+import useFilteredProducts from "../../hooks/useFilteredProducts";
+import useSortedProducts from "../../hooks/useSortedProducts";
 
 const ShopPage = () => {
   const categories = useSelector((state) => state.categories);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedPriceRange, setSelectedPriceRange] = useState([]);
-  const [sortOption, setSortOption] = useState("");
   const {
     data: products,
     loading,
@@ -17,6 +20,17 @@ const ShopPage = () => {
   const itemsPerPage = 12;
   const [itemOffset, setItemOffset] = useState(0);
   const [forcePage, setForcePage] = useState(0);
+
+  const {
+    filteredProducts,
+    selectedCategories,
+    setSelectedCategories,
+    selectedPriceRange,
+    setSelectedPriceRange,
+  } = useFilteredProducts(products);
+
+  const { sortedProducts, sortOption, setSortOption } =
+    useSortedProducts(filteredProducts);
 
   const handlePageClick = (event) => {
     const newOffset = event.selected * itemsPerPage;
@@ -48,92 +62,9 @@ const ShopPage = () => {
     window.scrollTo(0, 0);
   };
 
-  const filteredProducts = products
-    ?.filter((product) => {
-      if (selectedCategories.length > 0) {
-        return selectedCategories.includes(product.category);
-      }
-      return true;
-    })
-    .filter((product) => {
-      if (selectedPriceRange.length > 0) {
-        const price = product.price;
-        return selectedPriceRange.some((range) => {
-          switch (range) {
-            case "100000":
-              return price <= 100000;
-            case "500000":
-              return price > 100000 && price <= 500000;
-            case "1000000":
-              return price > 500000 && price <= 1000000;
-            case "1000000+":
-              return price > 1000000;
-            default:
-              return true;
-          }
-        });
-      }
-      return true;
-    })
-    .sort((a, b) => {
-      switch (sortOption) {
-        case "Name, A to Z":
-          return a.name.localeCompare(b.name);
-        case "Name, Z to A":
-          return b.name.localeCompare(a.name);
-        case "Price, low to high":
-          return a.price - b.price;
-        case "Price, high to low":
-          return b.price - a.price;
-        case "Date, late to new":
-          return new Date(a.updatedAt) - new Date(b.updatedAt);
-        case "Date, new to late":
-          return new Date(b.updatedAt) - new Date(a.updatedAt);
-        default:
-          return;
-      }
-    });
-
   const endOffset = itemOffset + itemsPerPage;
-  const currentProducts = filteredProducts?.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(filteredProducts?.length / itemsPerPage);
-
-  const filterPrice = () => (
-    <div className="flex flex-col pt-5 gap-4">
-      <div className="flex flex-row gap-5">
-        <input
-          type="checkbox"
-          className="checkbox"
-          onChange={() => handlePriceRangeChange("100000")}
-        />
-        <p>Rp 0 - 100.000</p>
-      </div>
-      <div className="flex flex-row gap-5">
-        <input
-          type="checkbox"
-          className="checkbox"
-          onChange={() => handlePriceRangeChange("500000")}
-        />
-        <p>Rp 100.000 - 500.000</p>
-      </div>
-      <div className="flex flex-row gap-5">
-        <input
-          type="checkbox"
-          className="checkbox"
-          onChange={() => handlePriceRangeChange("1000000")}
-        />
-        <p>Rp 500.000 - 1.000.000</p>
-      </div>
-      <div className="flex flex-row gap-5">
-        <input
-          type="checkbox"
-          className="checkbox"
-          onChange={() => handlePriceRangeChange("1000000+")}
-        />
-        <p>Rp 1.000.000 +</p>
-      </div>
-    </div>
-  );
+  const currentProducts = sortedProducts?.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(sortedProducts?.length / itemsPerPage);
 
   if (error) {
     Swal.fire({
@@ -163,12 +94,15 @@ const ShopPage = () => {
           ))}
         </div>
         <h4 className="pt-8 text-[#01213a] font-medium text-lg">Price</h4>
-        {filterPrice()}
+        <FilterByPrice
+          handlePriceRangeChange={handlePriceRangeChange}
+          selectedPriceRange={selectedPriceRange}
+        />
       </div>
-      <div className="lg:flex-[0.75] md:flex-[0.7]">
+      <div className="lg:flex-[0.75] md:flex-[0.7] flex-1">
         <div className="flex justify-between items-center text-gray-400">
           <p className="md:flex hidden">
-            There are {filteredProducts?.length} products.
+            There are {sortedProducts?.length} products.
           </p>
           <div className="flex items-center md:justify-between gap-10 md:w-auto w-full">
             <p className="md:flex hidden w-32">Sort by:</p>
@@ -225,7 +159,10 @@ const ShopPage = () => {
                   <h4 className="pt-8 text-[#01213a] font-medium text-lg">
                     Price
                   </h4>
-                  {filterPrice()}
+                  <FilterByPrice
+                    handlePriceRangeChange={handlePriceRangeChange}
+                    selectedPriceRange={selectedPriceRange}
+                  />
                 </div>
               </div>
             </div>
@@ -233,10 +170,10 @@ const ShopPage = () => {
         </div>
         <p className="text-gray-400 text-center sm:text-base text-sm block md:hidden mt-5">
           Showing {itemOffset + 1}-
-          {endOffset <= filteredProducts?.length
+          {endOffset <= sortedProducts?.length
             ? endOffset
-            : filteredProducts?.length}{" "}
-          of {filteredProducts?.length} products
+            : sortedProducts?.length}{" "}
+          of {sortedProducts?.length} products
         </p>
         {loading ? (
           <LoadingSpinner loading={loading} />
@@ -250,35 +187,16 @@ const ShopPage = () => {
         <div className="flex lg:flex-row flex-col items-center justify-between mt-5 gap-5">
           <p className="text-gray-400 sm:text-base text-sm">
             Showing {itemOffset + 1}-
-            {endOffset <= filteredProducts?.length
+            {endOffset <= sortedProducts?.length
               ? endOffset
-              : filteredProducts?.length}{" "}
-            of {filteredProducts?.length} products
+              : sortedProducts?.length}{" "}
+            of {sortedProducts?.length} products
           </p>
-          {filteredProducts?.length >= itemsPerPage && (
-            <ReactPaginate
-              className="join"
-              previousLabel="<"
-              nextLabel=">"
-              breakLabel="..."
-              breakClassName="join-item btn sm:btn-md btn-sm bg-white"
-              breakLinkClassName="text-black rounded-full bg-transparent"
+          {sortedProducts?.length >= itemsPerPage && (
+            <Pagination
               pageCount={pageCount}
-              pageRangeDisplayed={1}
-              marginPagesDisplayed={2}
-              onPageChange={handlePageClick}
-              pageClassName=""
-              pageLinkClassName="join-item btn sm:btn-md btn-sm text-black rounded-full bg-white"
-              previousLinkClassName={`page-link bg-white join-item btn sm:btn-md btn-sm text-black rounded-full ${
-                forcePage === 0 ? "btn-disabled" : ""
-              }`}
-              nextLinkClassName={`join-item bg-white btn sm:btn-md btn-sm text-black rounded-full ${
-                forcePage === pageCount - 1 ? "btn-disabled" : ""
-              }`}
-              activeClassName="active border-0 bg-purple-500"
-              activeLinkClassName="page-link !bg-purple-500 text-white font-bold border-0 "
               forcePage={forcePage}
-              disabledClassName="cursor-not-allowed"
+              handlePageClick={handlePageClick}
             />
           )}
         </div>

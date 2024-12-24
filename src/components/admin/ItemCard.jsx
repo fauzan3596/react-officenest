@@ -31,7 +31,7 @@ const ItemCard = ({ type }) => {
 
   const categoryCount = () => {
     if (type) {
-      if (type === "Out of Stocks") {
+      if (type === "Stock") {
         return outOfStockProduct?.length;
       } else {
         return categoryProduct?.length;

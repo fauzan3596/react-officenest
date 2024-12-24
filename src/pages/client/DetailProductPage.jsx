@@ -94,9 +94,9 @@ const DetailProductPage = () => {
     }
   }
 
-  if (quantity > stock - cart.quantity) {
-    if (stock !== cart.quantity) {
-      dispatch(setQuantity(stock - cart.quantity));
+  if (quantity > stock - cart?.quantity) {
+    if (stock !== cart?.quantity) {
+      dispatch(setQuantity(stock - cart?.quantity));
       Swal.fire({
         title: "Out of Stock!",
         text: "Cannot exceed stock limit!",
@@ -124,7 +124,7 @@ const DetailProductPage = () => {
           <p className="text-gray-500 font-medium">Quantity</p>
           <div
             className={`flex items-center border rounded-full ${
-              stock === 0 || stock === cart.quantity
+              stock === 0 || stock === cart?.quantity
                 ? "bg-gray-400 opacity-50"
                 : ""
             }`}
@@ -132,7 +132,7 @@ const DetailProductPage = () => {
             <button
               onClick={() => dispatch(decrement())}
               className="text-xl font-bold px-3 rounded-l-full py-2 hover:bg-[#e84f69] hover:text-white disabled:bg-gray-400 disabled:text-black"
-              disabled={stock === 0 || stock === cart.quantity}
+              disabled={stock === 0 || stock === cart?.quantity}
             >
               &minus;
             </button>
@@ -141,12 +141,12 @@ const DetailProductPage = () => {
               className="lg:w-14 md:w-10 w-14 text-center [&::-webkit-inner-spin-button]:appearance-none py-2 focus:outline-none disabled:bg-gray-400"
               value={!quantity ? 1 : quantity}
               onChange={(e) => dispatch(setQuantity(Number(e.target.value)))}
-              disabled={stock === 0 || stock === cart.quantity}
+              disabled={stock === 0 || stock === cart?.quantity}
             />
             <button
               onClick={() => dispatch(increment())}
               className="text-xl font-bold px-3 rounded-r-full py-2 hover:bg-[#e84f69] hover:text-white disabled:bg-gray-400 disabled:text-black"
-              disabled={stock === 0 || stock === cart.quantity}
+              disabled={stock === 0 || stock === cart?.quantity}
             >
               +
             </button>
@@ -154,7 +154,7 @@ const DetailProductPage = () => {
           <button
             onClick={addToCartHandler}
             className="btn bg-[#e84f69] text-white lg:w-36 md:w-28 w-36 hover:bg-rose-800 rounded-full disabled:bg-gray-400 disabled:text-black disabled:opacity-50"
-            disabled={stock === 0 || stock === cart.quantity}
+            disabled={stock === 0 || stock === cart?.quantity}
           >
             Add to Cart
           </button>

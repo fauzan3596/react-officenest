@@ -3,7 +3,7 @@ import { Cloudinary } from "@cloudinary/url-gen/index";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { deleteCart, updateCart } from "../../services/fetchApi";
+import { deleteCart, updateCart } from "../../../services/fetchApi";
 import Swal from "sweetalert2";
 
 const CartCard = ({ cart }) => {
