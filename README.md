@@ -94,6 +94,7 @@ A few of the things you can do with OfficeNest:
    - Copy your Firebase SDK to your .evn file with format just like in the .env.example file:
    - Add your .evn to .gitignore to avoid committing sensitive keys
    <br>
+   
    ```bash
    VITE_FIREBASE_APIKEY="your_api_key"
    VITE_FIREBASE_AUTHDOMAIN="your_authdomain"
