@@ -16,12 +16,8 @@
 
 - [Introduction](#introduction)
 - [Features](#features)
-- [Feedback](#feedback)
-- [Contributors](#contributors)
-- [Build Process](#build-process)
-- [Backers](#backers-)
-- [Sponsors](#sponsors-)
-- [Acknowledgments](#acknowledgments)
+- [Installation Proccess](#feedback)
+- [Tech Stack](#contributors)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -37,6 +33,7 @@ With a commitment to quality, convenience, and exceptional customer service, Off
   <img alt="Client Landing Page" title="Client Landing Page" src="./public/client-landingpage.PNG" width="full">
 </p>
   Access the client side in <a href="https://react-phase2-fauzan.web.app/client">https://react-phase2-fauzan.web.app/client</a>
+
 
 <p align="center">
   <img alt="Admin Landing Page" title="Admin Landing Page" src="./public/admin-landingpage.PNG" width="100%">
@@ -89,6 +86,7 @@ A few of the things you can do with OfficeNest:
    - Connect your Firebase project to your web app to get the Firebase SDK
    - Create a .env file in your root directory project
    - Copy your Firebase SDK to your .evn file with format just like in the .env.example file:
+
 
    ```bash
    VITE_FIREBASE_APIKEY="your_api_key"
