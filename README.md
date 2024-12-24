@@ -1,7 +1,7 @@
 <h1 align="center"> OfficeNest </h1> <br>
 <p align="center">
   <a href="https://react-phase2-fauzan.web.app/">
-    <img alt="OfficeNest" title="OfficeNest" src="./public/stationery.svg" width="450">
+    <img alt="OfficeNest" title="OfficeNest" src="./src/assets/stationery.png" width="450">
   </a>
 </p>
 
