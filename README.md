@@ -14,14 +14,13 @@
 
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Features](#features)
-- [Feedback](#feedback)
-- [Contributors](#contributors)
-- [Build Process](#build-process)
-- [Backers](#backers-)
-- [Sponsors](#sponsors-)
-- [Acknowledgments](#acknowledgments)
+  - [Admin Features:](#admin-features)
+  - [Client Features:](#client-features)
+- [Installation Proccess](#installation-proccess)
+- [Tech Stack](#tech-stack)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -34,27 +33,30 @@ With a commitment to quality, convenience, and exceptional customer service, Off
 **Available for both client and admin side.**
 
 <p align="center">
-  <img alt="Client Landing Page" title="Client Landing Page" src="./public/client-landingpage.PNG" width="450">
-  Access the client side in <a href="https://react-phase2-fauzan.web.app/client">https://react-phase2-fauzan.web.app/client</a>
+  <img alt="Client Landing Page" title="Client Landing Page" src="./public/client-landingpage.PNG">
+  <br >
+  <a href="https://react-phase2-fauzan.web.app/client">Click here to explore the client-side interface.</a>
 </p>
 
+<br >
 <p align="center">
-  <img alt="Admin Landing Page" title="Admin Landing Page" src="./public/admin-landingpage.PNG" width="450">
-  Access the client side in <a href="https://react-phase2-fauzan.web.app/">https://react-phase2-fauzan.web.app/</a>
+  <img alt="Admin Landing Page" title="Admin Landing Page" src="./public/admin-landingpage.PNG">
+  <br >
+  <a href="https://react-phase2-fauzan.web.app/">Click here to explore the admin-side interface.</a>
 </p>
 
 ## Features
 
 A few of the things you can do with OfficeNest:
 
-<b>Admin Features:</b>
+### Admin Features: 
 
 - **View Products**: Access a complete list of products with detailed information.
 - **Add Products**: Create new product listings with descriptions, prices, and categories.
 - **Update Products**: Edit existing product details, including price, category, and stock.
 - **Delete Products**: Remove products that are no longer available or relevant.
 
-<b>Client Features:</b>
+### Client Features:
 
 - **View Products**: Browse a wide range of products with detailed descriptions.
 - **Pagination for Products**: Navigate through product listings easily with paginated views.
@@ -85,10 +87,12 @@ A few of the things you can do with OfficeNest:
    ```
 
 3. **SDK setup and configuration**:
+
    - Create a new Firebase project
    - Connect your Firebase project to your web app to get the Firebase SDK
    - Create a .env file in your root directory project
    - Copy your Firebase SDK to your .evn file with format just like in the .env.example file:
+   - Add your .evn to .gitignore to avoid committing sensitive keys
 
    ```bash
    VITE_FIREBASE_APIKEY="your_api_key"
@@ -100,10 +104,12 @@ A few of the things you can do with OfficeNest:
    ```
 
 4. **Add sign-in method**:
+
    - In your Firebase dashboard, navigate to Build > Authentication
    - In sign-in method tab, add new provider by enabling the email/password and google sign-in providers
 
 5. **Create your own database**:
+
    - In your Firebase dashboard, navigate to Build > Firestore Database
    - Click create database then choose the location based on your nearest location
    - Choose the appropriate security rules (e.g., Test mode for development)
@@ -119,11 +125,11 @@ A few of the things you can do with OfficeNest:
 - **Front End**: React JS & Tailwind CSS
 - **Back End**: Firebase (Firestore)
 - **State Management**: Redux Toolkit
-- **Fetching Data**: TanStack React Query for the server-side API & Cloudinary for image hosting
-- **Others**:
-  - React Router Dom for routing
-  - React Icons for icons
-  - React Paginate for pagination
-  - React Spinners for loading spinner
-  - Sweetalert2 for popup boxes
-
+- **Fetching Data**: TanStack React Query
+- **Image Hosting**: Cloudinary
+- **Other Libraries**:
+  - React Router Dom (for routing)
+  - React Icons (for icons)
+  - React Paginate (for pagination)
+  - React Spinners (for loading spinner)
+  - Sweetalert2 (for pop-up boxes)
